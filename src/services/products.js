@@ -1,40 +1,13 @@
-import fetch from 'node-fetch'
+import fetch from '../utils/fetchUtils';
 
-export const getProducts = ()=>{
+export const getProducts = () => fetch('http://localhost:8080/api/getProducts/', 'GET');
 
-    const options = {
-        method: 'GET',  
-        headers: { 'Content-Type':'application/json' }
-    }
-
-    return fetch('http://localhost:8080/api/getProducts/', options)
-        .then ((res) =>{
-            if (res.ok){
-                return res.json()
-            }
-            return Promise.reject(res.status)
-        })
-}
-
-export const addTocart = (cartId, productId, quantity)=>{
-
-    let body = {
-        "cartId" : cartId,
-        "productId" : productId,
-        "quantity" : quantity
-    }
-
-    const options = {
-        method: 'POST', 
-        body: JSON.stringify(body), 
-        headers: { 'Content-Type':'application/json' }
-    }
-
-    return fetch('http://localhost:8080/api/addCartProduct/', options)
-            .then((res)=>{
-                if(res.ok){
-                    return res.json()
-                }
-                return Promise.reject(res.status)
-            })
-}
+export const addToCart = (cartId, productId, quantity) => fetch(
+  'http://localhost:8080/api/addCartProduct/',
+  'POST',
+  JSON.stringify({
+    cartId,
+    productId,
+    quantity
+  })
+);

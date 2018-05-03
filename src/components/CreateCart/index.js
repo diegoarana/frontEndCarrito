@@ -1,3 +1,3 @@
-import CreateCart from './CreateCart'
+import CreateCart from './CreateCart';
 
-export default CreateCart
+export default CreateCart;

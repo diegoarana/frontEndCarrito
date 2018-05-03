@@ -1,47 +1,7 @@
-import fetch from 'node-fetch'
+import fetch from '../utils/fetchUtils';
 
-export const createCart = (userDni)=>{
+export const createCart = (dni) => fetch('http://localhost:8080/api/create/', 'POST', JSON.stringify({ dni }));
 
-    let body = { dni: userDni}
+export const fetchCart = (id) => fetch(`http://localhost:8080/api/getCart/${id}`, 'GET');
 
-    const options = {
-        method: 'POST', 
-        body: JSON.stringify(body), 
-        headers: { 'Content-Type':'application/json' }
-    }
-
-    return fetch('http://localhost:8080/api/create/', options)
-        .then((res) => {
-            if (res.ok) {
-                return res.json()
-            }
-
-            return Promise.reject(res.status)
-        })
- }
-
- export const fetchCart = (cartId)=>{
-
-    const options = {
-        method: 'GET',  
-        headers: { 'Content-Type':'application/json' }
-    }
-    
-    return fetch(`http://localhost:8080/api/getCart/2`, options)
-        .then((res)=>{
-            return res.json()
-        })
- } 
-
- export const removeProduct = (productId, cartId) =>{
-
-    const options = {
-        method: 'DELETE',  
-        headers: { 'Content-Type':'application/json' }
-    }
-
-    return fetch(`url/cart/${cartId}`, options)
-        .then((res)=>{
-            return res.json()
-        })
- }
+export const removeProduct = (cartId, productId) => fetch(`http://localhost:8080/api/deleteCartProduct/${cartId}/${productId}`, 'DELETE');
