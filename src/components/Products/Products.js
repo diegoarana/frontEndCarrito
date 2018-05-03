@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { getProducts } from '../../services/products'
+import { getProducts, addTocart } from '../../services/products'
 import ProductItem from './ProductItem'
 import { Modal, Button } from 'react-bootstrap'
 
@@ -11,7 +11,8 @@ export default class Products extends Component {
         this.state = {
             productList : [],
             fetchingProducts: false,
-            selectedItem: null
+            selectedItem: null,
+            quantity : null
         }
 
     }
@@ -28,6 +29,19 @@ export default class Products extends Component {
                 this.updateFetchinProducts(false)
                 this.updateProductList(productList)
             })
+    }
+
+    addTocart = (cartId, productId, quantity) =>{
+        addTocart(cartId, productId, quantity)
+            .then((updatedCart)=>{
+                this.updateSelectedItem(null)
+            })
+    }
+
+    updateQuantity = (quantity) =>{
+        this.setState({
+            quantity
+        })
     }
 
     updateFetchinProducts = (value) =>{
@@ -54,11 +68,11 @@ export default class Products extends Component {
         if (product) {
             return (
                 <div>
-                    Product name: {product.name}
-                    Product description: {product.description}
-                    Product price: {product.price}
+                   <p> Product name : {product.name} </p>
+                   <p> Product price : {product.price}</p>
+                   <input type="number" value = {this.state.quantity} onChange={(event)=>this.updateQuantity(event.target.value)}/>
                     <button
-                        onClick={() => console.log('addToCart(product.id, cartId)')}
+                        onClick={() => this.addToCart(cartId, product.id, this.state.quantity)}
                     >
                         Add to cart
                     </button>
@@ -79,7 +93,6 @@ export default class Products extends Component {
                     <ProductItem
                         id={product.id}
                         name={product.name}
-                        description={product.description}
                         price={product.price}
                         selectItem={() => this.updateSelectedItem(product)}
                     />

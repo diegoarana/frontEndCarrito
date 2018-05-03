@@ -59,26 +59,26 @@ export default class Header extends Component{
         }
         return (
             <div>
-                {fullCart.products.map((product) => {
+                {fullCart.listProduct.map((item) => {
                     <div>
-                        <p>Name: {product.name}</p>
-                        <p>Price: {product.price}</p>            
+                        <p>Name: {item.product.name}</p>
+                        <p>Price: {item.product.price}</p>            
                         <button
-                            onClick={() => this.removeProductFromCart(product.id, fullCart.id)}
+                            onClick={() => this.removeProductFromCart(item.product.id, fullCart.id)}
                         >
                             remove</button>
                     </div>
                 })}
-                <p>Total: {fullCart.totalPrice}</p>
+                <p>Total: {fullCart.totalAmount}</p>
             </div>
         )
     }
     
     renderCart() {
         const { cart } = this.props;
-        if (!cart) {
+       if (!cart) {
             return null
-        }
+        } 
 
         return (
             <button

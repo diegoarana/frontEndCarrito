@@ -31,6 +31,7 @@ export default class CreateCart extends Component{
         createCart(this.state.userDni)
             .then((newCart) => {
                 updateCart(newCart)
+                console.log(newCart)
             })
             .catch((statusError) => {
                 this.updateCreatingCart(false)

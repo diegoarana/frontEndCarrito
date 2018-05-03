@@ -26,8 +26,8 @@ export const createCart = (userDni)=>{
         method: 'GET',  
         headers: { 'Content-Type':'application/json' }
     }
-
-    return fetch(`https://private-2cd5b2-cart27.apiary-mock.com/cart/${cartId}`, options)
+    
+    return fetch(`http://localhost:8080/api/getCart/2`, options)
         .then((res)=>{
             return res.json()
         })

@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      cart: null
+      cart: { "id": 2 }
     } 
   }
 
