@@ -14,7 +14,12 @@ export default function fetchUtils(url, method, body, extraHeaders) {
   return fetch(url, options)
     .then((res) => {
       if (res.ok) {
+        if (res.status === 204) {
+          return null;
+        } 
+        
         return res.json();
+        
       }
 
       return Promise.reject(res.status);

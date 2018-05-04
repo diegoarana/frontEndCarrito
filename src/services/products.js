@@ -11,3 +11,5 @@ export const addToCart = (cartId, productId, quantity) => fetch(
     quantity
   })
 );
+
+export const getMoreExpensiveProducts = (dni) => fetch('http://localhost:8080/api/getMoreExpensiveProducts/', 'POST', JSON.stringify({ dni }));

@@ -43,6 +43,7 @@ class App extends Component {
         cartId={this.state.cart.id}
         updateCart={this.updateCart}
         showNotification={this.showNotification}
+        dni={this.state.cart.user.dni}
       />;
   }
 

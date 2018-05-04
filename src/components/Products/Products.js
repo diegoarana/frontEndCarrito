@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
-import { getProducts, addToCart } from '../../services/products';
+import { getProducts, addToCart, getMoreExpensiveProducts } from '../../services/products';
 import ProductItem from './ProductItem';
+import MoreExpensiveItem from './MoreExpensiveItem';
 
 export default class Products extends Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class Products extends Component {
       fetchingProducts: false,
       selectedItem: null,
       quantity: null,
-      addingProduct: false
+      addingProduct: false,
+      moreExpensiveProducts: []
     };
   }
 
@@ -71,6 +73,38 @@ export default class Products extends Component {
     });
   }
 
+  UpdateMoreExpensiveProduct = (moreExpensiveProducts) => {
+    this.setState({
+      moreExpensiveProducts
+    });
+  }
+
+  getMoreExpensive = () => {
+    const { dni } = this.props;
+
+    getMoreExpensiveProducts(dni)
+     .then((resp) => {
+      this.UpdateMoreExpensiveProduct(resp);
+     });
+  }
+
+  showMoreExpensive = (moreExpensiveProducts) => {
+    if (!moreExpensiveProducts) {
+      return null;
+    }
+
+    return (
+      <div>
+        {this.state.moreExpensiveProducts.map((product) => (
+          <MoreExpensiveItem
+            name={product.name}
+            price={product.price}
+          />
+      ))}
+      </div>
+    )
+  }
+
   modalContent(product) {
     const { cartId } = this.props;
 
@@ -112,6 +146,12 @@ export default class Products extends Component {
             selectItem={() => this.updateSelectedItem(product)}
           />
         ))}
+        <div>
+          <button onClick={() => this.getMoreExpensive()}>
+            More expensive products
+          </button>
+          {this.showMoreExpensive(this.state.moreExpensiveProducts)}
+        </div>
         <Modal
           show={this.state.selectedItem !== null}
           onHide={() => this.updateSelectedItem(null)}
@@ -138,5 +178,6 @@ export default class Products extends Component {
 Products.propTypes = {
   cartId: PropTypes.number.isRequired,
   updateCart: PropTypes.func.isRequired,
-  showNotification: PropTypes.func.isRequired
+  showNotification: PropTypes.func.isRequired,
+  dni: PropTypes.number.isRequired
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-import { fetchCart, removeProduct } from '../../services/cart';
+import { fetchCart, removeProduct, payCart, removeCart } from '../../services/cart';
 
 export default class Header extends Component {
   constructor(props) {
@@ -55,6 +55,28 @@ export default class Header extends Component {
       });
   }
 
+  payTotalCart = (cartId) => {
+    const { updateCart } = this.props;
+
+    this.updateLoadingCart(true);
+    payCart(cartId)
+      .then((resp) => {
+        this.updateLoadingCart(false);
+        updateCart(null);
+      });
+  }
+
+  deleteCart = (cartId) => {
+    const { updateCart } = this.props;
+
+    this.updateLoadingCart(true);
+    removeCart(cartId)
+      .then((resp) => {
+        this.updateLoadingCart(false);
+        updateCart(resp);
+      });
+  }
+
   modalContent(cart) {
     if (!cart) {
       return null;
@@ -81,6 +103,14 @@ export default class Header extends Component {
           </div>
         ))}
         <p>Total: {cart.totalAmount}</p>
+
+        <button onClick={() => this.payTotalCart(cart.id)} >
+        Pay cart
+        </button>
+
+        <button onClick={() => this.deleteCart(cart.id)} >
+        Delete cart
+        </button>
       </div>
     );
   }
